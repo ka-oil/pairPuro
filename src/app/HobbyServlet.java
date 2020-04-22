@@ -28,7 +28,7 @@ public class HobbyServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO 必須機能「趣味参照機能」
-		String syainId = request.getParameter("syainId");
+		String syainId = "0001";
 		// JDBCドライバの準備
 				try {
 
@@ -46,22 +46,22 @@ public class HobbyServlet extends HttpServlet {
 				String pass = "wt2";
 
 				// 実行するSQL文
-				String sql = "select \n" +
-						"SY.SYAINID, \n" +
-						"HO.HOBBY_ID, \n" +
-						"CA.CATEGORY_ID, \n" +
-						"CA.CATEGORY_NAME, \n" +
-						"HO.HOBBY_NAME \n" +
-						"from \n" +
-						"MS_SYAIN SY, \n" +
-						"MS_SYAIN_HOBBY SH, \n" +
-						"MS_HOBBY HO, \n" +
-						"MS_CATEGORY CA \n" +
-						"where 1=1 \n" +
-						"and SY.SYAINID = SH.SYAINID \n" +
-						"and SH.HOBBY_ID = HO.HOBBY_ID \n" +
-						"and HO.CATEGORY_ID = CA.CATEGORY_ID \n" +
-						"and SY.SYAINID = '"+syainId+"' \n";
+				String sql = "select" +
+						"SYAINID," +
+						"HOBBY_ID," +
+						"CATEGORY_ID," +
+						"CATEGORY_NAME," +
+						"HOBBY_NAME" +
+						"from" +
+						"MS_SYAIN," +
+						"MS_SYAIN_HOBBY," +
+						"MS_HOBBY," +
+						"MS_CATEGORY" +
+						"where 1=1" +
+						"and SYAINID = SYAINID" +
+						"and HOBBY_ID = HOBBY_ID" +
+						"and CATEGORY_ID = CATEGORY_ID" +
+						"and SYAINID = '"+syainId+"'";
 
 
 				// 趣味リスト（Hobby型のリスト）
@@ -85,8 +85,8 @@ public class HobbyServlet extends HttpServlet {
 						// 一つ分の成績情報を入れるためReSScordインスタンスを生成
 						Hobby hobby = new Hobby();
 						// SQLの取得結果をインスタンスに代入
-						hobby.setHobby(rs1.getString("HO.HOBBY_NAME"));
-						hobby.setHobbyCategory(rs1.getString("CA.CATEGORY_NAME"));
+						hobby.setHobby(rs1.getString("HOBBY_NAME"));
+						hobby.setHobbyCategory(rs1.getString("CATEGORY_NAME"));
 
 						// 値を格納したHobbyインスタンスをリストに追加
 						list.add(hobby);
