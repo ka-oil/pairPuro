@@ -46,21 +46,27 @@ public class HobbyServlet extends HttpServlet {
 				String pass = "wt2";
 
 				// 実行するSQL文
-				String sql = "SY.SYAINID, HO.HOBBY_ID, CA.CATEGORY_ID, CA.CATEGORY_NAME, HO.HOBBY_NAME
-from
-MS_SYAIN SY,
-MS_SYAIN_HOBBY SH,
-MS_HOBBY HO,
-MS_CATEGORY CA
-where 1=1
-and SY.SYAINID = SH.SYAINID
-and SH.HOBBY_ID = HO.HOBBY_ID
-and HO.CATEGORY_ID = CA.CATEGORY_ID
-and SY.SYAINID = '0001'"
-				;
+				String sql = "select \n" +
+						"SY.SYAINID, \n" +
+						"HO.HOBBY_ID, \n" +
+						"CA.CATEGORY_ID, \n" +
+						"CA.CATEGORY_NAME, \n" +
+						"HO.HOBBY_NAME \n" +
+						"from \n" +
+						"MS_SYAIN SY, \n" +
+						"MS_SYAIN_HOBBY SH, \n" +
+						"MS_HOBBY HO, \n" +
+						"MS_CATEGORY CA \n" +
+						"where 1=1 \n" +
+						"and SY.SYAINID = SH.SYAINID \n" +
+						"and SH.HOBBY_ID = HO.HOBBY_ID \n" +
+						"and HO.CATEGORY_ID = CA.CATEGORY_ID \n" +
+						"and SY.SYAINID = '0001' \n";
 
-				// 成績情報リスト（Record型のリスト）
-				List<Record> recordList = new ArrayList<>();
+
+				// 趣味リスト（Hobby型のリスト）
+				List<Hobby> list = new ArrayList<>();
+
 				// エラーが発生するかもしれない処理はtry-catchで囲みます
 				// この場合はDBサーバへの接続に失敗する可能性があります
 				try (
@@ -77,17 +83,13 @@ and SY.SYAINID = '0001'"
 					// SQL実行結果を商品リストに追加していく。
 					while (rs1.next()) {
 						// 一つ分の成績情報を入れるためReSScordインスタンスを生成
-						Record record = new Record();
+						Hobby hobby = new Hobby();
 						// SQLの取得結果をインスタンスに代入
-						record.setRecCd(rs1.getString("REC_CD"));
-						record.setBatterName(rs1.getString("BAT_NAME"));
-						record.setYear(rs1.getString("BAT_YEAR"));
-						record.setAve(rs1.getString("B_AVG"));
-						record.setBat(rs1.getString("AT_BAT"));
-						record.setHit(rs1.getString("HIT"));
+						hobby.setHobby(rs1.getString("HO.HOBBY_NAME"));
+						hobby.setHobbyCategory(rs1.getString("CA.CATEGORY_NAME"));
 
-						// 値を格納した成績インスタンスをリストに追加
-						recordList.add(record);
+						// 値を格納したHobbyインスタンスをリストに追加
+						list.add(hobby);
 					}
 				} catch (Exception e) {
 					throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細：[%s]", e.getMessage()), e);
@@ -96,13 +98,13 @@ and SY.SYAINID = '0001'"
 				// アクセスした人に応答するためのJSONを用意する
 				PrintWriter pw = response.getWriter();
 				// JSONで出力する
-				pw.append(new ObjectMapper().writeValueAsString(recordList));
+				pw.append(new ObjectMapper().writeValueAsString(list));
 
 		// -- ここまで --
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
 		// TODO 任意機能「趣味投稿機能に挑戦する場合はこちらを利用して下さい」
 
 		// -- ここまで --
