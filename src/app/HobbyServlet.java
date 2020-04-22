@@ -61,7 +61,7 @@ public class HobbyServlet extends HttpServlet {
 						"and SY.SYAINID = SH.SYAINID \n" +
 						"and SH.HOBBY_ID = HO.HOBBY_ID \n" +
 						"and HO.CATEGORY_ID = CA.CATEGORY_ID \n" +
-						"and SY.SYAINID = '0001' \n";
+						"and SY.SYAINID = '"+syainId+"' \n";
 
 
 				// 趣味リスト（Hobby型のリスト）
