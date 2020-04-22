@@ -28,7 +28,7 @@ public class HobbyServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO 必須機能「趣味参照機能」
-		String syainId = "0001";
+		String syainId = request.getParameter("syainId");
 		// JDBCドライバの準備
 				try {
 
@@ -46,22 +46,7 @@ public class HobbyServlet extends HttpServlet {
 				String pass = "wt2";
 
 				// 実行するSQL文
-				String sql = "select" +
-						"SYAINID," +
-						"HOBBY_ID," +
-						"CATEGORY_ID," +
-						"CATEGORY_NAME," +
-						"HOBBY_NAME" +
-						"from" +
-						"MS_SYAIN," +
-						"MS_SYAIN_HOBBY," +
-						"MS_HOBBY," +
-						"MS_CATEGORY" +
-						"where 1=1" +
-						"and SYAINID = SYAINID" +
-						"and HOBBY_ID = HOBBY_ID" +
-						"and CATEGORY_ID = CATEGORY_ID" +
-						"and SYAINID = '"+syainId+"'";
+				String sql = "select SY.SYAINID,HO.HOBBY_ID,CA.CATEGORY_ID,CA.CATEGORY_NAME,HO.HOBBY_NAME from MS_SYAIN SY,MS_SYAIN_HOBBY SH,MS_HOBBY HO,MS_CATEGORY CA where 1=1 and SY.SYAINID = SH.SYAINID and SH.HOBBY_ID = HO.HOBBY_ID and HO.CATEGORY_ID = CA.CATEGORY_ID and SY.SYAINID = '"+syainId+"'";
 
 
 				// 趣味リスト（Hobby型のリスト）
